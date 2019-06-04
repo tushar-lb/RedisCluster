@@ -1,0 +1,9 @@
+apiVersion: storage.k8s.io/v1beta1
+kind: StorageClass
+metadata:
+  name: portworx-redis-sc
+provisioner: kubernetes.io/portworx-volume
+parameters:
+  repl: "2"
+  io_profile: db
+  priority_io: "high"
