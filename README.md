@@ -6,12 +6,37 @@ If the cluster configuration of a redis node is lost in some way, it will come b
 
 ## Setup
 
+#### Create storage class to allow dynamic provisioing of volumes for redis cluster nodes:
 ```bash
 kubectl apply -f portworx-redis-sc.yaml
 ```
 
+#### Apply the redis cluster spec:
 ``` bash
 kubectl apply -f redis-cluster.yml
+```
+
+#### Check the redis cluster nodes:
+```bash
+NAME              READY   STATUS    RESTARTS   AGE
+redis-cluster-0   1/1     Running   0          4m42s
+redis-cluster-1   1/1     Running   0          3m59s
+redis-cluster-2   1/1     Running   0          3m9s
+redis-cluster-3   1/1     Running   0          2m11s
+redis-cluster-4   1/1     Running   0          96s
+redis-cluster-5   1/1     Running   0          57s
+```
+
+#### PVC which are used by redis cluster nodes:
+```bash
+kubectl get pvc
+NAME                   STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS        AGE
+data-redis-cluster-0   Bound    pvc-2f82a951-8703-11e9-916b-000c29a48cb7   10Gi       RWO            portworx-redis-sc   4m11s
+data-redis-cluster-1   Bound    pvc-4944c0c3-8703-11e9-916b-000c29a48cb7   10Gi       RWO            portworx-redis-sc   3m28s
+data-redis-cluster-2   Bound    pvc-66f4df5e-8703-11e9-916b-000c29a48cb7   10Gi       RWO            portworx-redis-sc   2m38s
+data-redis-cluster-3   Bound    pvc-89b2d854-8703-11e9-916b-000c29a48cb7   10Gi       RWO            portworx-redis-sc   100s
+data-redis-cluster-4   Bound    pvc-9e387a56-8703-11e9-916b-000c29a48cb7   10Gi       RWO            portworx-redis-sc   65s
+data-redis-cluster-5   Bound    pvc-b5e7d0ea-8703-11e9-916b-000c29a48cb7   10Gi       RWO            portworx-redis-sc   26s
 ```
 
 This will spin up 6 `redis-cluster` pods one by one, which may take a while. After all pods are in a running state, you can itialize the cluster using the `redis-cli` in any of the pods. After the initialization, you will end up with 3 master and 3 slave nodes.
