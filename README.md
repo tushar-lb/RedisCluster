@@ -18,6 +18,7 @@ kubectl apply -f redis-cluster.yml
 
 #### Check the redis cluster nodes:
 ```bash
+kubectl get pods
 NAME              READY   STATUS    RESTARTS   AGE
 redis-cluster-0   1/1     Running   0          4m42s
 redis-cluster-1   1/1     Running   0          3m59s
