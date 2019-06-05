@@ -46,6 +46,21 @@ kubectl exec -it redis-cluster-0 -- redis-cli --cluster create --cluster-replica
 $(kubectl get pods -l app=redis-cluster -o jsonpath='{range.items[*]}{.status.podIP}:6379 ')
 ```
 
+#### Cluster info :
+```bash
+kubectl exec -it redis-cluster-0 -- redis-cli cluster info
+```
+
+#### Redis cluster nodes role:
+```bash
+for x in $(seq 0 5); do echo "redis-cluster-$x"; kubectl exec redis-cluster-$x -- redis-cli role; echo; done
+```
+
+#### Check individual node role:
+```bash
+kubectl exec -it redis-cluster-0 -- redis-cli role
+```
+
 ## Adding nodes
 Adding nodes to the cluster involves a few manual steps. First, let's add two nodes:
 ``` bash
