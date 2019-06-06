@@ -61,6 +61,11 @@ for x in $(seq 0 5); do echo "redis-cluster-$x"; kubectl exec redis-cluster-$x -
 kubectl exec -it redis-cluster-0 -- redis-cli role
 ```
 
+#### Perform failover:
+```bash
+kubectl exec -it redis-cluster-2 -- redis-cli -c -h <IP_ADDR_REDIS_CLUSTER_2_POD> -p 6379 cluster failover
+```
+
 ## Adding nodes
 Adding nodes to the cluster involves a few manual steps. First, let's add two nodes:
 ``` bash
